@@ -12,9 +12,10 @@ namespace SmartphoneInteraction {
 
     document.addEventListener("pointerdown", hndPointerEvent);
     document.addEventListener("pointerup", hndPointerEvent);
+    document.addEventListener("pointermove", hndPointerEvent);
   }
 
   function hndPointerEvent(_event: PointerEvent) {
-    ƒ.Debug.log(_event.pointerType, _event.pointerId);
+    ƒ.Debug.log(_event.pointerType, _event.pointerId, TouchList.length);
   }
 }
