@@ -14,6 +14,6 @@ var SmartphoneInteraction;
         document.addEventListener("pointermove", hndPointerEvent);
     }
     function hndPointerEvent(_event) {
-        ƒ.Debug.log(_event.pointerType, _event.pointerId, TouchList.length);
+        ƒ.Debug.log(_event.pointerType, _event.pointerId, _event);
     }
 })(SmartphoneInteraction || (SmartphoneInteraction = {}));

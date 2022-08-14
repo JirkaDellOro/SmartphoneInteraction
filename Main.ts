@@ -16,6 +16,6 @@ namespace SmartphoneInteraction {
   }
 
   function hndPointerEvent(_event: PointerEvent) {
-    ƒ.Debug.log(_event.pointerType, _event.pointerId, TouchList.length);
+    ƒ.Debug.log(_event.pointerType, _event.pointerId, _event);
   }
 }
