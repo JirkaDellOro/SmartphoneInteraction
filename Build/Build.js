@@ -9,11 +9,11 @@ var SmartphoneInteraction;
         ƒ.Debug.setFilter(ƒ.DebugTextArea, ƒ.DEBUG_FILTER.ALL);
         // ƒ.Debug.setFilter(ƒ.DebugAlert, ƒ.DEBUG_FILTER.ALL);
         ƒ.Debug.log("Hallo");
-        document.addEventListener("pointerdown", hndPointerEvent);
-        document.addEventListener("pointerup", hndPointerEvent);
-        document.addEventListener("pointermove", hndPointerEvent);
+        document.addEventListener("touchstart", hndEvent);
+        document.addEventListener("touchend", hndEvent);
+        document.addEventListener("touchmove", hndEvent);
     }
-    function hndPointerEvent(_event) {
-        ƒ.Debug.log(_event.pointerType, _event.pointerId, _event);
+    function hndEvent(_event) {
+        ƒ.Debug.log(_event.touches.length, _event);
     }
 })(SmartphoneInteraction || (SmartphoneInteraction = {}));
