@@ -18,9 +18,8 @@ namespace SmartphoneInteraction {
 
     public hndEvent = (_event: TouchEvent): void => {
       _event.preventDefault();
-      ƒ.Debug.log(_event.type);
       let nTouches: number = _event.touches.length;
-      let touchLast: Touch | undefined = nTouches ? _event.touches[nTouches - 1] : undefined;
+      let touchLast: Touch | undefined = _event.touches[nTouches - 1];
       let position: ƒ.Vector2 = new ƒ.Vector2(touchLast?.clientX, touchLast?.clientY);
       let offset: ƒ.Vector2;
 
@@ -30,11 +29,14 @@ namespace SmartphoneInteraction {
           break;
         case "touchend":
         case "touchcancel":
+
           if (nTouches > 0) {
             this.startGesture(position);
             break;
           }
           offset = ƒ.Vector2.DIFFERENCE(position, this.posStart);
+      ƒ.Debug.log(position.magnitude);
+
           if (offset.magnitude < this.radiusTap)
             this.target.dispatchEvent(
               new CustomEvent("touchTap", {

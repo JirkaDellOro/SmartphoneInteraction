@@ -18,9 +18,8 @@ var SmartphoneInteraction;
         }
         hndEvent = (_event) => {
             _event.preventDefault();
-            SmartphoneInteraction.ƒ.Debug.log(_event.type);
             let nTouches = _event.touches.length;
-            let touchLast = nTouches ? _event.touches[nTouches - 1] : undefined;
+            let touchLast = _event.touches[nTouches - 1];
             let position = new SmartphoneInteraction.ƒ.Vector2(touchLast?.clientX, touchLast?.clientY);
             let offset;
             switch (_event.type) {
@@ -34,6 +33,7 @@ var SmartphoneInteraction;
                         break;
                     }
                     offset = SmartphoneInteraction.ƒ.Vector2.DIFFERENCE(position, this.posStart);
+                    SmartphoneInteraction.ƒ.Debug.log(position.magnitude);
                     if (offset.magnitude < this.radiusTap)
                         this.target.dispatchEvent(new CustomEvent("touchTap", {
                             bubbles: true, detail: { position: position, touches: _event.touches }
