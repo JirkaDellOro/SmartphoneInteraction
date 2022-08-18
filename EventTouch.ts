@@ -60,6 +60,7 @@ namespace SmartphoneInteraction {
                 bubbles: true, detail: { position: position, touches: _event.touches, offset: offset, cardinal: cardinal }
               }));
             this.posNotch = position;
+            ƒ.Debug.log(this.moved);
           }
           //TODO: pinch, rotate...
           break;
