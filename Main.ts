@@ -13,7 +13,7 @@ namespace SmartphoneInteraction {
     let touch: EventTouch = new EventTouch(document);
     console.log(touch);
 
-    document.addEventListener("touchNotch", <EventListener>((_event: CustomEvent) => ƒ.Debug.log("----touchNotch", _event.detail.cardinal)));
+    document.addEventListener("touchNotch", <EventListener>((_event: CustomEvent) => ƒ.Debug.log("touchNotch", _event.detail.cardinal)));
     document.addEventListener("touchTap", () => ƒ.Debug.log("touchTap"));
   }
 }

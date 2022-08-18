@@ -6,6 +6,7 @@ declare namespace SmartphoneInteraction {
         radiusNotch: number;
         private target;
         private posPrev;
+        private moved;
         constructor(_target: EventTarget, _radiusTap?: number, _radiusNotch?: number);
         hndEvent: (_event: TouchEvent) => void;
         private startGesture;
