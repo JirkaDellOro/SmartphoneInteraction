@@ -47,9 +47,12 @@ namespace SmartphoneInteraction {
         case "touchmove":
           offset = ƒ.Vector2.DIFFERENCE(position, this.posNotch);
           if (offset.magnitude > this.radiusNotch) {
+            let cardinal: ƒ.Vector2 = Math.abs(offset.x) > Math.abs(offset.y) ?
+              ƒ.Vector2.X(offset.x < 0 ? -1 : 1) :
+              ƒ.Vector2.Y(offset.y < 0 ? -1 : 1);
             this.target.dispatchEvent(
               new CustomEvent("touchNotch", {
-                bubbles: true, detail: { position: position, touches: _event.touches }
+                bubbles: true, detail: { position: position, touches: _event.touches, offset: offset, cardinal: cardinal }
               }));
             this.posNotch = position;
           }
@@ -63,7 +66,6 @@ namespace SmartphoneInteraction {
 
     private startGesture(_position: ƒ.Vector2): void {
       this.posNotch = this.posStart = _position;
-      ƒ.Debug.log("Start Gesture");
     }
   }
 }

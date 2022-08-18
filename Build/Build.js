@@ -42,8 +42,9 @@ var SmartphoneInteraction;
                 case "touchmove":
                     offset = SmartphoneInteraction.ƒ.Vector2.DIFFERENCE(position, this.posNotch);
                     if (offset.magnitude > this.radiusNotch) {
+                        let cardinal = Math.abs();
                         this.target.dispatchEvent(new CustomEvent("touchNotch", {
-                            bubbles: true, detail: { position: position, touches: _event.touches }
+                            bubbles: true, detail: { position: position, touches: _event.touches, offset: offset }
                         }));
                         this.posNotch = position;
                     }
@@ -55,7 +56,6 @@ var SmartphoneInteraction;
         };
         startGesture(_position) {
             this.posNotch = this.posStart = _position;
-            SmartphoneInteraction.ƒ.Debug.log("Start Gesture");
         }
     }
     SmartphoneInteraction.EventTouch = EventTouch;
