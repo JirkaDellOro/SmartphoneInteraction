@@ -19,8 +19,7 @@ namespace SmartphoneInteraction {
 
     public hndEvent = (_event: TouchEvent): void => {
       _event.preventDefault();
-      let nTouches: number = _event.touches.length;
-      let touchLast: Touch | undefined = _event.touches[0];
+      let touchLast: Touch = _event.touches[0];
       let position: ƒ.Vector2 = new ƒ.Vector2(touchLast?.clientX, touchLast?.clientY);
       let offset: ƒ.Vector2;
 
@@ -30,13 +29,14 @@ namespace SmartphoneInteraction {
           break;
         case "touchend":
         case "touchcancel":
-
-          if (nTouches > 0) {
+          if (_event.touches.length > 0) {
+            // still touches active
             this.startGesture(position);
             break;
           }
-          offset = ƒ.Vector2.DIFFERENCE(this.posPrev, this.posStart);
 
+          // check if there was movement, otherwise fire tap
+          offset = ƒ.Vector2.DIFFERENCE(this.posPrev, this.posStart);
           if (offset.magnitude < this.radiusTap)
             this.target.dispatchEvent(
               new CustomEvent("touchTap", {
@@ -45,6 +45,7 @@ namespace SmartphoneInteraction {
             );
           break;
         case "touchmove":
+          // fire notch when touches moved out of notch radius and reset notch
           offset = ƒ.Vector2.DIFFERENCE(position, this.posNotch);
           if (offset.magnitude > this.radiusNotch) {
             let cardinal: ƒ.Vector2 = Math.abs(offset.x) > Math.abs(offset.y) ?
@@ -56,16 +57,18 @@ namespace SmartphoneInteraction {
               }));
             this.posNotch = position;
           }
+          //TODO: pinch, rotate...
           break;
         default:
           break;
       }
 
-      this.posPrev = position;
+      this.posPrev.set(position.x, position.y);
     }
 
     private startGesture(_position: ƒ.Vector2): void {
-      this.posNotch = this.posStart = _position;
+      this.posNotch.set(_position.x, _position.y);
+      this.posStart.set(_position.x, _position.y);
     }
   }
 }
