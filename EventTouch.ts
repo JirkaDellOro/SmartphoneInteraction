@@ -47,7 +47,7 @@ namespace SmartphoneInteraction {
           break;
         case "touchmove":
           offset = ƒ.Vector2.DIFFERENCE(this.posPrev, this.posStart);
-          this.moved = (offset.magnitude < this.radiusTap); // remember that touch moved over tap radius
+          this.moved ||= (offset.magnitude < this.radiusTap); // remember that touch moved over tap radius
 
           // fire notch when touches moved out of notch radius and reset notch
           offset = ƒ.Vector2.DIFFERENCE(position, this.posNotch);
