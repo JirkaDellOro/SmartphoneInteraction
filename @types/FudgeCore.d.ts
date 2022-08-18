@@ -2361,14 +2361,6 @@ declare namespace FudgeCore {
 }
 declare namespace FudgeCore {
     /**
-     * Mappings of standard DOM/Browser-Events as passed from a canvas to the viewport
-     */
-    const enum EVENT_KEYBOARD {
-        UP = "\u0192keyup",
-        DOWN = "\u0192keydown",
-        PRESS = "\u0192keypress"
-    }
-    /**
      * The codes sent from a standard english keyboard layout
      */
     enum KEYBOARD_CODE {
@@ -2567,6 +2559,38 @@ declare namespace FudgeCore {
         lastCall: boolean;
         count: number;
         constructor(_timer: Timer, ..._arguments: Object[]);
+    }
+}
+declare namespace FudgeCore {
+    enum EVENT_TOUCH {
+        /** the standard touchstart, in here for completeness */
+        START = "touchstart",
+        /** the standard touchend, in here for completeness */
+        END = "touchend",
+        /** the standard touchmove, in here for completeness */
+        MOVE = "touchmove",
+        /** the standard touchcancel, in here for completeness */
+        CANCEL = "touchcancel",
+        /** custom event fired when the touches haven't moved outside of the tap radius */
+        TAP = "touchTap",
+        /** custom event fired when the touches have moved outside of the notch radius, details offset and cardinal direction */
+        NOTCH = "touchNotch",
+        /** custom event not implemented yet */
+        PINCH = "touchPinch",
+        /** custom event not implemented yet */
+        ROTATE = "touchRotate"
+    }
+    class EventTouch {
+        posStart: Vector2;
+        posNotch: Vector2;
+        radiusTap: number;
+        radiusNotch: number;
+        private target;
+        private posPrev;
+        private moved;
+        constructor(_target: EventTarget, _radiusTap?: number, _radiusNotch?: number);
+        hndEvent: (_event: TouchEvent) => void;
+        private startGesture;
     }
 }
 declare namespace FudgeCore {

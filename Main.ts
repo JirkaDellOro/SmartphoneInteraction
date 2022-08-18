@@ -10,10 +10,10 @@ namespace SmartphoneInteraction {
     // ƒ.Debug.setFilter(ƒ.DebugAlert, ƒ.DEBUG_FILTER.ALL);
     ƒ.Debug.log("Hallo");
 
-    let touch: EventTouch = new EventTouch(document);
+    let touch: ƒ.EventTouch = new ƒ.EventTouch(document);
     console.log(touch);
 
-    document.addEventListener("touchNotch", <EventListener>((_event: CustomEvent) => ƒ.Debug.log("touchNotch", _event.detail.cardinal)));
-    document.addEventListener("touchTap", () => ƒ.Debug.log("touchTap"));
+    document.addEventListener(ƒ.EVENT_TOUCH.NOTCH, <EventListener>((_event: CustomEvent) => ƒ.Debug.log("touchNotch", _event.detail.cardinal)));
+    document.addEventListener(ƒ.EVENT_TOUCH.TAP, () => ƒ.Debug.log("touchTap"));
   }
 }
