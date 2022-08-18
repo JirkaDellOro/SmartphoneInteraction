@@ -7,6 +7,7 @@ var SmartphoneInteraction;
         radiusTap;
         radiusNotch;
         target;
+        posPrev = SmartphoneInteraction.ƒ.Vector2.ZERO();
         constructor(_target, _radiusTap = 5, _radiusNotch = 50) {
             _target.addEventListener("touchstart", this.hndEvent);
             _target.addEventListener("touchend", this.hndEvent);
@@ -19,7 +20,7 @@ var SmartphoneInteraction;
         hndEvent = (_event) => {
             _event.preventDefault();
             let nTouches = _event.touches.length;
-            let touchLast = _event.touches[nTouches - 1];
+            let touchLast = _event.touches[0];
             let position = new SmartphoneInteraction.ƒ.Vector2(touchLast?.clientX, touchLast?.clientY);
             let offset;
             switch (_event.type) {
@@ -32,8 +33,7 @@ var SmartphoneInteraction;
                         this.startGesture(position);
                         break;
                     }
-                    offset = SmartphoneInteraction.ƒ.Vector2.DIFFERENCE(position, this.posStart);
-                    SmartphoneInteraction.ƒ.Debug.log(position.magnitude);
+                    offset = SmartphoneInteraction.ƒ.Vector2.DIFFERENCE(this.posPrev, this.posStart);
                     if (offset.magnitude < this.radiusTap)
                         this.target.dispatchEvent(new CustomEvent("touchTap", {
                             bubbles: true, detail: { position: position, touches: _event.touches }
@@ -51,6 +51,7 @@ var SmartphoneInteraction;
                 default:
                     break;
             }
+            this.posPrev = position;
         };
         startGesture(_position) {
             this.posNotch = this.posStart = _position;

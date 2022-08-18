@@ -5,6 +5,7 @@ namespace SmartphoneInteraction {
     public radiusTap: number;
     public radiusNotch: number;
     private target: EventTarget;
+    private posPrev: ƒ.Vector2 = ƒ.Vector2.ZERO();
 
     public constructor(_target: EventTarget, _radiusTap: number = 5, _radiusNotch: number = 50) {
       _target.addEventListener("touchstart", <EventListener>this.hndEvent);
@@ -19,7 +20,7 @@ namespace SmartphoneInteraction {
     public hndEvent = (_event: TouchEvent): void => {
       _event.preventDefault();
       let nTouches: number = _event.touches.length;
-      let touchLast: Touch | undefined = _event.touches[nTouches - 1];
+      let touchLast: Touch | undefined = _event.touches[0];
       let position: ƒ.Vector2 = new ƒ.Vector2(touchLast?.clientX, touchLast?.clientY);
       let offset: ƒ.Vector2;
 
@@ -34,8 +35,7 @@ namespace SmartphoneInteraction {
             this.startGesture(position);
             break;
           }
-          offset = ƒ.Vector2.DIFFERENCE(position, this.posStart);
-      ƒ.Debug.log(position.magnitude);
+          offset = ƒ.Vector2.DIFFERENCE(this.posPrev, this.posStart);
 
           if (offset.magnitude < this.radiusTap)
             this.target.dispatchEvent(
@@ -57,12 +57,13 @@ namespace SmartphoneInteraction {
         default:
           break;
       }
+
+      this.posPrev = position;
     }
 
     private startGesture(_position: ƒ.Vector2): void {
       this.posNotch = this.posStart = _position;
       ƒ.Debug.log("Start Gesture");
     }
-
   }
 }
