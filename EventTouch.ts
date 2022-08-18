@@ -6,6 +6,7 @@ namespace SmartphoneInteraction {
     public radiusNotch: number;
     private target: EventTarget;
     private posPrev: ƒ.Vector2 = ƒ.Vector2.ZERO();
+    private moved: boolean = false;
 
     public constructor(_target: EventTarget, _radiusTap: number = 5, _radiusNotch: number = 50) {
       _target.addEventListener("touchstart", <EventListener>this.hndEvent);
@@ -25,6 +26,7 @@ namespace SmartphoneInteraction {
 
       switch (_event.type) {
         case "touchstart":
+          this.moved = false;
           this.startGesture(position);
           break;
         case "touchend":
@@ -36,8 +38,7 @@ namespace SmartphoneInteraction {
           }
 
           // check if there was movement, otherwise fire tap
-          offset = ƒ.Vector2.DIFFERENCE(this.posPrev, this.posStart);
-          if (offset.magnitude < this.radiusTap)
+          if (!this.moved)
             this.target.dispatchEvent(
               new CustomEvent("touchTap", {
                 bubbles: true, detail: { position: position, touches: _event.touches }
@@ -45,6 +46,9 @@ namespace SmartphoneInteraction {
             );
           break;
         case "touchmove":
+          offset = ƒ.Vector2.DIFFERENCE(this.posPrev, this.posStart);
+          this.moved = (offset.magnitude < this.radiusTap); // remember that touch moved over tap radius
+
           // fire notch when touches moved out of notch radius and reset notch
           offset = ƒ.Vector2.DIFFERENCE(position, this.posNotch);
           if (offset.magnitude > this.radiusNotch) {
