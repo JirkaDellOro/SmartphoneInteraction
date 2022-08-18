@@ -30,7 +30,6 @@ namespace SmartphoneInteraction {
           this.startGesture(position);
           break;
         case "touchend":
-        case "touchcancel":
           if (_event.touches.length > 0) {
             // still touches active
             this.startGesture(position);
