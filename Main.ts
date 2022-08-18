@@ -1,5 +1,5 @@
 namespace SmartphoneInteraction {
-  import ƒ = FudgeCore;
+  export import ƒ = FudgeCore;
 
   window.addEventListener("load", start);
 
@@ -10,12 +10,10 @@ namespace SmartphoneInteraction {
     // ƒ.Debug.setFilter(ƒ.DebugAlert, ƒ.DEBUG_FILTER.ALL);
     ƒ.Debug.log("Hallo");
 
-    document.addEventListener("touchstart", hndEvent);
-    document.addEventListener("touchend", hndEvent);
-    document.addEventListener("touchmove", hndEvent);
-  }
+    let touch: EventTouch = new EventTouch(document);
+    console.log(touch);
 
-  function hndEvent(_event: TouchEvent) {
-    ƒ.Debug.log(_event.touches.length, _event);
+    document.addEventListener("touchNotch", () => ƒ.Debug.log("touchNotch"));
+    document.addEventListener("touchTap", () => ƒ.Debug.log("touchTap"));
   }
 }

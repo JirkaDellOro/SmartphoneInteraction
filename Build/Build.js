@@ -1,19 +1,74 @@
 "use strict";
 var SmartphoneInteraction;
 (function (SmartphoneInteraction) {
-    var ƒ = FudgeCore;
+    class EventTouch {
+        posStart = SmartphoneInteraction.ƒ.Vector2.ZERO();
+        posNotch = SmartphoneInteraction.ƒ.Vector2.ZERO();
+        radiusTap;
+        radiusNotch;
+        target;
+        constructor(_target, _radiusTap = 5, _radiusNotch = 20) {
+            _target.addEventListener("touchstart", this.hndEvent);
+            _target.addEventListener("touchend", this.hndEvent);
+            _target.addEventListener("touchmove", this.hndEvent);
+            this.target = _target;
+            this.radiusTap = _radiusTap;
+            this.radiusNotch = _radiusNotch;
+        }
+        hndEvent = (_event) => {
+            // ƒ.Debug.log(_event.touches.length, _event);
+            let nTouches = _event.touches.length;
+            let touchLast = nTouches ? _event.touches[nTouches - 1] : undefined;
+            let position = new SmartphoneInteraction.ƒ.Vector2(touchLast?.clientX, touchLast?.clientY);
+            let offset;
+            switch (_event.type) {
+                case "touchstart":
+                    this.startGesture(position);
+                    break;
+                case "touchend":
+                    if (nTouches > 0) {
+                        this.startGesture(position);
+                        break;
+                    }
+                    offset = SmartphoneInteraction.ƒ.Vector2.DIFFERENCE(position, this.posStart);
+                    if (offset.magnitude < this.radiusTap)
+                        this.target.dispatchEvent(new CustomEvent("touchTap", {
+                            bubbles: true, detail: { position: position, touches: _event.touches }
+                        }));
+                    break;
+                case "touchmove":
+                    offset = SmartphoneInteraction.ƒ.Vector2.DIFFERENCE(position, this.posNotch);
+                    if (offset.magnitude > this.radiusNotch) {
+                        this.target.dispatchEvent(new CustomEvent("touchNotch", {
+                            bubbles: true, detail: { position: position, touches: _event.touches }
+                        }));
+                        this.posNotch = position;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        };
+        startGesture(_position) {
+            this.posNotch = this.posStart = _position;
+            SmartphoneInteraction.ƒ.Debug.log("Start Gesture");
+        }
+    }
+    SmartphoneInteraction.EventTouch = EventTouch;
+})(SmartphoneInteraction || (SmartphoneInteraction = {}));
+var SmartphoneInteraction;
+(function (SmartphoneInteraction) {
+    SmartphoneInteraction.ƒ = FudgeCore;
     window.addEventListener("load", start);
     function start(_event) {
-        ƒ.DebugTextArea.textArea = document.querySelector("textarea");
+        SmartphoneInteraction.ƒ.DebugTextArea.textArea = document.querySelector("textarea");
         // let targets: ƒ.DebugTarget[] = [ƒ.DebugConsole, ƒ.DebugTextArea, ƒ.DebugAlert];
-        ƒ.Debug.setFilter(ƒ.DebugTextArea, ƒ.DEBUG_FILTER.ALL);
+        SmartphoneInteraction.ƒ.Debug.setFilter(SmartphoneInteraction.ƒ.DebugTextArea, SmartphoneInteraction.ƒ.DEBUG_FILTER.ALL);
         // ƒ.Debug.setFilter(ƒ.DebugAlert, ƒ.DEBUG_FILTER.ALL);
-        ƒ.Debug.log("Hallo");
-        document.addEventListener("touchstart", hndEvent);
-        document.addEventListener("touchend", hndEvent);
-        document.addEventListener("touchmove", hndEvent);
-    }
-    function hndEvent(_event) {
-        ƒ.Debug.log(_event.touches.length, _event);
+        SmartphoneInteraction.ƒ.Debug.log("Hallo");
+        let touch = new SmartphoneInteraction.EventTouch(document);
+        console.log(touch);
+        document.addEventListener("touchNotch", () => SmartphoneInteraction.ƒ.Debug.log("touchNotch"));
+        document.addEventListener("touchTap", () => SmartphoneInteraction.ƒ.Debug.log("touchTap"));
     }
 })(SmartphoneInteraction || (SmartphoneInteraction = {}));
