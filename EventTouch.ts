@@ -6,17 +6,19 @@ namespace SmartphoneInteraction {
     public radiusNotch: number;
     private target: EventTarget;
 
-    public constructor(_target: EventTarget, _radiusTap: number = 5, _radiusNotch: number = 20) {
+    public constructor(_target: EventTarget, _radiusTap: number = 5, _radiusNotch: number = 50) {
       _target.addEventListener("touchstart", <EventListener>this.hndEvent);
       _target.addEventListener("touchend", <EventListener>this.hndEvent);
       _target.addEventListener("touchmove", <EventListener>this.hndEvent);
+      document.addEventListener("touchcancel", <EventListener>this.hndEvent);
       this.target = _target;
       this.radiusTap = _radiusTap;
       this.radiusNotch = _radiusNotch;
     }
 
     public hndEvent = (_event: TouchEvent): void => {
-      // ƒ.Debug.log(_event.touches.length, _event);
+      _event.preventDefault();
+      ƒ.Debug.log(_event.type);
       let nTouches: number = _event.touches.length;
       let touchLast: Touch | undefined = nTouches ? _event.touches[nTouches - 1] : undefined;
       let position: ƒ.Vector2 = new ƒ.Vector2(touchLast?.clientX, touchLast?.clientY);
@@ -27,6 +29,7 @@ namespace SmartphoneInteraction {
           this.startGesture(position);
           break;
         case "touchend":
+        case "touchcancel":
           if (nTouches > 0) {
             this.startGesture(position);
             break;
