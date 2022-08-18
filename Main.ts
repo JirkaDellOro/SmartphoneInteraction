@@ -1,5 +1,5 @@
 namespace SmartphoneInteraction {
-  export import ƒ = FudgeCore;
+  import ƒ = FudgeCore;
 
   window.addEventListener("load", start);
 
