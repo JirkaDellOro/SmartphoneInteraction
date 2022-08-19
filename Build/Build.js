@@ -14,5 +14,6 @@ var SmartphoneInteraction;
         document.addEventListener(ƒ.EVENT_TOUCH.NOTCH, ((_event) => ƒ.Debug.log("touchNotch", _event.detail.cardinal)));
         document.addEventListener(ƒ.EVENT_TOUCH.TAP, () => ƒ.Debug.log("touchTap"));
         document.addEventListener(ƒ.EVENT_TOUCH.DOUBLE, () => ƒ.Debug.log("touchDouble"));
+        document.addEventListener(ƒ.EVENT_TOUCH.LONG, () => ƒ.Debug.log("touchLong"));
     }
 })(SmartphoneInteraction || (SmartphoneInteraction = {}));
