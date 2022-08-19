@@ -15,5 +15,6 @@ namespace SmartphoneInteraction {
 
     document.addEventListener(ƒ.EVENT_TOUCH.NOTCH, <EventListener>((_event: CustomEvent) => ƒ.Debug.log("touchNotch", _event.detail.cardinal)));
     document.addEventListener(ƒ.EVENT_TOUCH.TAP, () => ƒ.Debug.log("touchTap"));
+    document.addEventListener(ƒ.EVENT_TOUCH.DOUBLE, () => ƒ.Debug.log("touchDouble"));
   }
 }
