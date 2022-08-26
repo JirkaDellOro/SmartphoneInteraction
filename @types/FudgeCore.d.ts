@@ -2549,8 +2549,8 @@ declare namespace FudgeCore {
         CALL = "\u0192lapse"
     }
     /**
-     * An event that represents a call from a Timer
-     * */
+     * An event that represents a call from a {@link Timer}
+     */
     class EventTimer {
         type: EVENT_TIMER;
         target: Timer;
@@ -2562,15 +2562,12 @@ declare namespace FudgeCore {
     }
 }
 declare namespace FudgeCore {
+    /**
+     * Custom touch events
+     */
     enum EVENT_TOUCH {
-        /** the standard touchstart, in here for completeness */
-        START = "touchstart",
-        /** the standard touchend, in here for completeness */
-        END = "touchend",
-        /** the standard touchmove, in here for completeness */
-        MOVE = "touchmove",
-        /** the standard touchcancel, in here for completeness */
-        CANCEL = "touchcancel",
+        /** custom event fired in addition to the standard touchmove, details offset to starting touch */
+        MOVE = "touchMove",
         /** custom event fired when the touches haven't moved outside of the tap radius */
         TAP = "touchTap",
         /** custom event fired when the touches have moved outside of the notch radius, details offset and cardinal direction */
@@ -2584,7 +2581,21 @@ declare namespace FudgeCore {
         /** custom event not implemented yet */
         ROTATE = "touchRotate"
     }
-    class EventTouch {
+    /** Details for CustomTouchEvents, use as generic CustomEvent<EventTouchDetail> */
+    interface EventTouchDetail {
+        position: Vector2;
+        touches: TouchList;
+        offset?: Vector2;
+        movement?: Vector2;
+        cardinal?: Vector2;
+        pinch?: Vector2;
+        pinchDelta?: number;
+    }
+    /**
+     * Dispatches CustomTouchEvents to the EventTarget given with the constructor.
+     * @author Jirka Dell'Oro-Friedl, HFU, 2022
+     */
+    class TouchEventDispatcher {
         posStart: Vector2;
         posNotch: Vector2;
         radiusTap: number;
@@ -2592,9 +2603,16 @@ declare namespace FudgeCore {
         private target;
         private posPrev;
         private moved;
-        private timer;
-        constructor(_target: EventTarget, _radiusTap?: number, _radiusNotch?: number);
+        private timerDouble;
+        private timerLong;
+        private timeDouble;
+        private timeLong;
+        private time;
+        private pinchDelta;
+        private pinchTolerance;
+        constructor(_target: EventTarget, _radiusTap?: number, _radiusNotch?: number, _timeDouble?: number, _timerLong?: number);
         hndEvent: (_event: TouchEvent) => void;
+        private detectPinch;
         private startGesture;
     }
 }
